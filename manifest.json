@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Livo — Personal Operations Manager",
+  "version": "0.1.0",
+  "description": "Livo finds the money leaks, deadlines, expirations, and travel logistics hidden in your inbox — and tells you what to do about them.",
+  "minimum_chrome_version": "116",
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Open Livo"
+  },
+  "side_panel": {
+    "default_path": "sidepanel/sidepanel.html"
+  },
+  "options_page": "options/options.html",
+  "permissions": [
+    "storage",
+    "identity",
+    "alarms",
+    "sidePanel",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://gmail.googleapis.com/*",
+    "https://api.openai.com/*",
+    "https://api.anthropic.com/*",
+    "https://generativelanguage.googleapis.com/*"
+  ],
+  "oauth2": {
+    "client_id": "REPLACE_WITH_YOUR_CLIENT_ID.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/gmail.readonly"
+    ]
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
