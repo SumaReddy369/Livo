@@ -53,6 +53,24 @@ Livo reads Gmail through the official API with a read-only scope.
 - Suggested actions are **recommendations, never executions**: "Cancel Trial" opens the source email so you act yourself; "Remind Me" schedules a Chrome notification. Livo never claims an action was completed.
 - Every event can be marked done, snoozed a day, dismissed, or restored. HIGH-severity active events show as a red badge count on the toolbar icon.
 
+## Website (landing page + waitlist)
+
+The `website/` folder is a static landing page with an animated demo of the extension and a waitlist form backed by Supabase.
+
+### Set up the waitlist database
+
+1. Create a free project at [supabase.com](https://supabase.com).
+2. In the dashboard, open **SQL Editor**, paste the contents of `website/supabase-setup.sql`, and run it. This creates a `waitlist` table locked down with row-level security (visitors can only insert, never read).
+3. Copy your project's **URL** and **anon public key** from Project Settings → API into `website/config.js`.
+
+The anon key is safe to expose in frontend code because RLS only allows inserts.
+
+### Preview and deploy
+
+- Preview locally by opening `website/index.html` in a browser (everything is static — no build step).
+- Deploy the `website/` folder to any static host (Vercel, Netlify, Cloudflare Pages, GitHub Pages). Signups appear in Supabase → Table Editor → `waitlist`.
+- To replace the animated demo with a real screen recording later, swap the `.demo-stage` block in `index.html` for a `<video>` tag.
+
 ## Privacy notes
 
 - Email content goes only to the AI provider you configure, one email at a time, truncated to ~9 KB of text.

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Livo — Your Personal Operations Manager</title>
+  <meta name="description" content="Livo watches your inbox and surfaces the money leaks, deadlines, expirations, and travel logistics you'd otherwise miss — before they become problems." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <span class="brand-mark">L</span>
+        <span class="brand-name">Livo</span>
+      </div>
+      <div class="nav-links">
+        <a href="#demo">Demo</a>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#waitlist" class="nav-cta">Join waitlist</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="hero-glow"></div>
+    <p class="hero-eyebrow">AI-powered personal operations manager</p>
+    <h1>Your inbox is hiding things<br /><span class="grad">that cost you money.</span></h1>
+    <p class="hero-sub">
+      Livo watches your email and surfaces the small number of things that actually need
+      your attention — trials about to charge you, price increases, deadlines, expiring
+      documents, and travel logistics — before they become problems.
+    </p>
+
+    <form id="hero-waitlist" class="waitlist-form" autocomplete="on">
+      <input type="text" name="name" placeholder="Your name" required maxlength="80" />
+      <input type="email" name="email" placeholder="you@email.com" required maxlength="120" />
+      <button type="submit" class="btn-cta">Join the waitlist</button>
+    </form>
+    <p id="hero-waitlist-msg" class="form-msg" role="status"></p>
+    <p class="hero-note">Free for early users · Read-only Gmail access · No emails stored on any server</p>
+  </header>
+
+  <!-- ============ ANIMATED DEMO ============ -->
+  <section class="demo" id="demo">
+    <div class="section-head">
+      <h2>See Livo in action</h2>
+      <p>Watch what happens when Livo scans a typical inbox.</p>
+    </div>
+
+    <div class="demo-stage" id="demo-stage" aria-label="Animated demo of the Livo extension scanning an inbox">
+      <div class="browser-chrome">
+        <div class="browser-dots"><i></i><i></i><i></i></div>
+        <div class="browser-url">mail.google.com</div>
+        <div class="browser-ext-icon" id="demo-ext-icon">L<span class="ext-badge" id="demo-badge"></span></div>
+      </div>
+
+      <div class="demo-body">
+        <!-- Fake inbox -->
+        <div class="demo-inbox">
+          <div class="inbox-header">Inbox</div>
+          <div class="inbox-list" id="demo-inbox-list"></div>
+        </div>
+
+        <!-- Livo side panel -->
+        <div class="demo-panel" id="demo-panel">
+          <div class="panel-top">
+            <span class="brand-mark small">L</span>
+            <div>
+              <strong>Livo</strong>
+              <div class="panel-tagline">Personal operations manager</div>
+            </div>
+            <button class="panel-scan" id="demo-scan-label">Scan now</button>
+          </div>
+          <div class="panel-status" id="demo-status">Idle</div>
+          <div class="panel-events" id="demo-events">
+            <div class="demo-bucket" id="demo-bucket-urgent" hidden>
+              <div class="bucket-label urgent">Urgent</div>
+              <div class="bucket-cards"></div>
+            </div>
+            <div class="demo-bucket" id="demo-bucket-attention" hidden>
+              <div class="bucket-label attention">Needs attention</div>
+              <div class="bucket-cards"></div>
+            </div>
+            <div class="demo-bucket" id="demo-bucket-upcoming" hidden>
+              <div class="bucket-label upcoming">Upcoming</div>
+              <div class="bucket-cards"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-caption" id="demo-caption">&nbsp;</div>
+      <button class="demo-replay" id="demo-replay" title="Replay demo">&#8635; Replay</button>
+    </div>
+    <p class="demo-footnote">This is a live simulation of the real extension UI — not a mock-up of imaginary features.</p>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section class="features" id="features">
+    <div class="section-head">
+      <h2>Four kinds of problems, caught early</h2>
+      <p>Livo isn't another inbox. It only speaks up when something matters.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon leak">$</div>
+        <h3>Money leaks</h3>
+        <p>Free trials about to convert, subscription price hikes, automatic renewals, promo rates ending. Livo shows the exact dollar impact and how to avoid it.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon expire">&#9203;</div>
+        <h3>Expirations</h3>
+        <p>Passports, warranties, insurance policies, memberships, leases. Know before they lapse — not after.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon deadline">&#9873;</div>
+        <h3>Deadlines</h3>
+        <p>Bills due, documents to sign, forms to submit, cancellation windows closing. Every deadline gets a date and a suggested action.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon travel">&#9992;</div>
+        <h3>Travel logistics</h3>
+        <p>Check-in windows, departure times, itinerary changes, hotel and rental pickups — surfaced exactly when you need them.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="how" id="how">
+    <div class="section-head">
+      <h2>How it works</h2>
+      <p>Three steps. Zero servers. Your data stays yours.</p>
+    </div>
+    <ol class="steps">
+      <li>
+        <span class="step-num">1</span>
+        <h3>Connect Gmail</h3>
+        <p>Read-only access through Google's official API. Livo can never send, modify, or delete your mail.</p>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <h3>AI finds what matters</h3>
+        <p>Each email is analyzed against one question: what does this person need to know or do before it becomes a problem? Noise is aggressively filtered out.</p>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <h3>Act in one click</h3>
+        <p>A daily digest of Urgent / Needs attention / Upcoming, each with why it was flagged and what to do — cancel, remind, review.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ WAITLIST CTA ============ -->
+  <section class="cta" id="waitlist">
+    <div class="cta-card">
+      <h2>Stop paying for things you forgot about.</h2>
+      <p>Livo is opening to early users soon. Join the waitlist and be first in line.</p>
+      <form id="cta-waitlist" class="waitlist-form" autocomplete="on">
+        <input type="text" name="name" placeholder="Your name" required maxlength="80" />
+        <input type="email" name="email" placeholder="you@email.com" required maxlength="120" />
+        <button type="submit" class="btn-cta">Join the waitlist</button>
+      </form>
+      <p id="cta-waitlist-msg" class="form-msg" role="status"></p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="brand">
+      <span class="brand-mark small">L</span>
+      <span>Livo</span>
+    </div>
+    <p>Read-only Gmail scope · Your emails never touch a Livo server · You choose the AI provider</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
