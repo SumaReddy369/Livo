@@ -30,21 +30,33 @@
   <!-- ============ HERO ============ -->
   <header class="hero">
     <div class="hero-glow"></div>
-    <p class="hero-eyebrow">AI-powered personal operations manager</p>
-    <h1>Your inbox is hiding things<br /><span class="grad">that cost you money.</span></h1>
-    <p class="hero-sub">
-      Livo watches your email and surfaces the small number of things that actually need
-      your attention — trials about to charge you, price increases, deadlines, expiring
-      documents, and travel logistics — before they become problems.
-    </p>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Personal operations manager</p>
+      <h1>Your inbox is hiding things<br /><span class="grad">that cost you money.</span></h1>
+      <p class="hero-sub">
+        Livo watches your email and surfaces the small number of things that actually need
+        your attention — trials about to charge you, price increases, deadlines, expiring
+        documents, and travel logistics — before they become problems.
+      </p>
 
-    <form id="hero-waitlist" class="waitlist-form" autocomplete="on">
-      <input type="text" name="name" placeholder="Your name" required maxlength="80" />
-      <input type="email" name="email" placeholder="you@email.com" required maxlength="120" />
-      <button type="submit" class="btn-cta">Join the waitlist</button>
-    </form>
-    <p id="hero-waitlist-msg" class="form-msg" role="status"></p>
-    <p class="hero-note">Free for early users · Read-only Gmail access · No emails stored on any server</p>
+      <form id="hero-waitlist" class="waitlist-form" autocomplete="on">
+        <input type="text" name="name" placeholder="Your name" required maxlength="80" />
+        <input type="email" name="email" placeholder="you@email.com" required maxlength="120" />
+        <button type="submit" class="btn-cta">Join the waitlist</button>
+      </form>
+      <p id="hero-waitlist-msg" class="form-msg" role="status"></p>
+      <p class="hero-note">Free for early users · Read-only Gmail access · No emails stored on any server</p>
+    </div>
+    <div class="money-scene" aria-hidden="true">
+      <canvas id="money-canvas" width="420" height="250"></canvas>
+      <div class="money-caption" id="money-caption">
+        <span class="money-status" id="money-status">
+          <span class="money-dot" id="money-dot"></span>
+          <strong id="money-phase-label">Livo off</strong>
+        </span>
+        <span id="money-phase-copy">Without Livo, the leak hits the trash.</span>
+      </div>
+    </div>
   </header>
 
   <!-- ============ ANIMATED DEMO ============ -->

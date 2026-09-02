@@ -257,3 +257,230 @@ function wireForm(formId, msgId) {
 
 wireForm("hero-waitlist", "hero-waitlist-msg");
 wireForm("cta-waitlist", "cta-waitlist-msg");
+
+/* ------------------------- dollar → trash scene (one bill, clear story) ------------------------- */
+
+function initMoneyScene() {
+  const canvas = document.getElementById("money-canvas");
+  const scene = document.querySelector(".money-scene");
+  if (!canvas || !scene) return;
+
+  const ctx = canvas.getContext("2d");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const phaseLabel = document.getElementById("money-phase-label");
+  const phaseCopy = document.getElementById("money-phase-copy");
+  const phaseDot = document.getElementById("money-dot");
+
+  // Two clear beats: off (bill → trash), on (Livo catches it).
+  const OFF_MS = 3200;
+  const ON_MS = 3200;
+  const GAP_MS = 700;
+  const CYCLE = OFF_MS + GAP_MS + ON_MS + GAP_MS;
+
+  let w = 420;
+  let h = 250;
+  let dpr = 1;
+  let lastPhase = "";
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = canvas.getBoundingClientRect();
+    w = Math.max(1, Math.floor(rect.width));
+    h = Math.max(1, Math.floor(rect.height));
+    canvas.width = Math.floor(w * dpr);
+    canvas.height = Math.floor(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function roundRect(x, y, rw, rh, r) {
+    const rad = Math.min(r, rw / 2, rh / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + rad, y);
+    ctx.arcTo(x + rw, y, x + rw, y + rh, rad);
+    ctx.arcTo(x + rw, y + rh, x, y + rh, rad);
+    ctx.arcTo(x, y + rh, x, y, rad);
+    ctx.arcTo(x, y, x + rw, y, rad);
+    ctx.closePath();
+  }
+
+  function drawBill(x, y, scale, caught) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(scale, scale);
+    const bw = 72;
+    const bh = 38;
+    const grad = ctx.createLinearGradient(-bw / 2, 0, bw / 2, 0);
+    if (caught) {
+      grad.addColorStop(0, "#157a4a");
+      grad.addColorStop(0.5, "#2db56a");
+      grad.addColorStop(1, "#157a4a");
+    } else {
+      grad.addColorStop(0, "#c9a227");
+      grad.addColorStop(0.5, "#e8cc5a");
+      grad.addColorStop(1, "#c9a227");
+    }
+    ctx.fillStyle = grad;
+    ctx.strokeStyle = "rgba(22, 49, 38, 0.25)";
+    ctx.lineWidth = 1.5;
+    roundRect(-bw / 2, -bh / 2, bw, bh, 7);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = caught ? "#06351f" : "#3d2d08";
+    ctx.font = "800 16px Inter, system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("$99", 0, 1);
+    ctx.restore();
+  }
+
+  function drawTrash(x, y, lidOpen) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.fillStyle = "rgba(22, 49, 38, 0.12)";
+    ctx.beginPath();
+    ctx.ellipse(0, 36, 42, 7, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "#6b7f73";
+    ctx.strokeStyle = "#4d5f55";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-34, -4);
+    ctx.lineTo(-26, 34);
+    ctx.quadraticCurveTo(0, 42, 26, 34);
+    ctx.lineTo(34, -4);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = "#2c3a32";
+    ctx.beginPath();
+    ctx.ellipse(0, -4, 32, 7, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.save();
+    ctx.translate(0, -8);
+    ctx.rotate(-lidOpen * 0.9);
+    ctx.fillStyle = "#7d9185";
+    ctx.strokeStyle = "#4d5f55";
+    roundRect(-40, -7, 80, 11, 5);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = "#5c7166";
+    roundRect(-9, -13, 18, 7, 3);
+    ctx.fill();
+    ctx.restore();
+    ctx.restore();
+  }
+
+  function drawLivo(x, y, power) {
+    if (power <= 0.02) return;
+    ctx.save();
+    ctx.globalAlpha = power;
+    ctx.translate(x, y);
+    const size = 48;
+    const g = ctx.createLinearGradient(-size / 2, -size / 2, size / 2, size / 2);
+    g.addColorStop(0, "#1a7a4c");
+    g.addColorStop(1, "#0f5c3a");
+    ctx.fillStyle = g;
+    roundRect(-size / 2, -size / 2, size, size, 13);
+    ctx.fill();
+    ctx.fillStyle = "#fff";
+    ctx.font = "800 24px Inter, system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("L", 0, 1);
+    ctx.restore();
+  }
+
+  function setCaption(on) {
+    const key = on ? "on" : "off";
+    if (key === lastPhase) return;
+    lastPhase = key;
+    phaseLabel.textContent = on ? "Livo on" : "Livo off";
+    phaseCopy.textContent = on
+      ? "With Livo, the $99 leak is caught."
+      : "Without Livo, the leak hits the trash.";
+    phaseDot.classList.toggle("on", on);
+  }
+
+  function easeIn(t) {
+    return t * t;
+  }
+
+  function tick(now) {
+    const t = now % CYCLE;
+    const on = t >= OFF_MS + GAP_MS && t < OFF_MS + GAP_MS + ON_MS;
+    setCaption(on);
+
+    const cx = w / 2;
+    const startY = 28;
+    const catchY = h * 0.42;
+    const trashY = h - 48;
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = "#f7fbf8";
+    ctx.fillRect(0, 0, w, h);
+
+    let billY = startY;
+    let billScale = 1;
+    let caught = false;
+    let lid = 0;
+    let livoPower = 0;
+
+    if (t < OFF_MS) {
+      const p = Math.min(1, t / (OFF_MS - 400));
+      billY = startY + (trashY - 18 - startY) * easeIn(p);
+      if (p > 0.82) {
+        lid = Math.min(1, (p - 0.82) / 0.18);
+        billScale = 1 - (p - 0.82) / 0.18;
+      }
+    } else if (t < OFF_MS + GAP_MS) {
+      billY = -80;
+      lid = Math.max(0, 1 - (t - OFF_MS) / 250);
+    } else if (t < OFF_MS + GAP_MS + ON_MS) {
+      const local = t - OFF_MS - GAP_MS;
+      livoPower = Math.min(1, local / 280);
+      const p = Math.min(1, local / (ON_MS - 500));
+      const mid = startY + (catchY - startY) * easeIn(Math.min(1, p / 0.55));
+      if (p < 0.55) {
+        billY = mid;
+      } else {
+        caught = true;
+        const absorb = (p - 0.55) / 0.45;
+        billY = catchY;
+        billScale = Math.max(0, 1 - absorb);
+        billY = catchY - absorb * 8;
+      }
+    } else {
+      livoPower = Math.max(0, 1 - (t - (OFF_MS + GAP_MS + ON_MS)) / 280);
+      billY = -80;
+    }
+
+    drawTrash(cx, trashY, lid);
+    drawLivo(cx, catchY, livoPower);
+    if (billY > -40 && billScale > 0.04) drawBill(cx, billY, billScale, caught);
+
+    if (!reduced) requestAnimationFrame(tick);
+  }
+
+  resize();
+  window.addEventListener("resize", resize);
+
+  if (reduced) {
+    setCaption(true);
+    requestAnimationFrame((now) => {
+      ctx.fillStyle = "#f7fbf8";
+      ctx.fillRect(0, 0, w, h);
+      drawTrash(w / 2, h - 48, 0);
+      drawLivo(w / 2, h * 0.42, 1);
+      drawBill(w / 2, h * 0.42, 1, true);
+    });
+    return;
+  }
+
+  requestAnimationFrame(tick);
+}
+
+initMoneyScene();
+
